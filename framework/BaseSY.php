@@ -75,6 +75,7 @@ class BaseSY {
 
 	/*
 	 * 调试模式
+	 * static::$debug = $config['debug'];
 	 */
 	public static $debug = TRUE;
 
@@ -255,8 +256,12 @@ class BaseSY {
 	 */
 	// createUrl(['document/start', 'title' => 'Router'])
 	public static function createUrl($param = '', $ext = NULL) {
-		$param = (array )$param;
+		$param = (array)$param;
 		$router = $param[0];// document/start
+
+		/*
+		 * 增加锚点
+		 */
 		$anchor = isset($param['#']) ? '#' . $param['#'] : '';
 		unset($param[static::$routeParam], $param['#']);
 		//基本URL

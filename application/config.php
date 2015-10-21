@@ -10,48 +10,14 @@
  */
 
 return [
-	'appName' => 'Demo',
-	//调试模式
-	'debug' => TRUE,
-	//App根目录，相对于framework目录
-	'dir' => '../application/',
+
+	/*
+	 * BaseSY.php createApplication()
+	 */
+
 	//编码
 	'charset' => 'utf-8',
-	//默认语言
-	'language' => 'zh-CN',
-	//加密Key，被YSecurity::securityCode使用
-	'cookieKey' => 'test',
-	//加密Key，被YSecurity::password使用
-	//请在开发过程中定下，实际过程中修改可能导致不可预料的后果
-	'securityKey' => 'test',
-	//是否默认开启CSRF验证
-	'csrf' => FALSE,
-	//是否启用URL重写
-	'rewrite' => FALSE,
-	//URL后缀，仅rewrite启用时有效
-	'rewriteExt' => 'html',
-	//自定义重写规则
-	//此处@root作用与YHtml::css中@root作用相同
-	'rewriteRule' => [
-		'article/view' => '@root/article/view/{{id}}.html',
-		'article/list' => '@root/article/list/{{id}}-{{page}}.html',
-		'user/view' => 'member/view-{{id}}.html'
-	],
-	//Controller列表
-	'controller' => [
-		'document'
-	],
-	//默认的Router
-	'defaultRouter' => 'document/hello',
-	//会被Autoload加载的class列表
-	'class' => [
-		'demo\libs\option' => '@app/libs/option.php'
-	],
-	//虚拟路由表
-	//例如'user'=>'eu_user'
-	'alias' => [
-		'doc' => 'document'
-	],
+
 	//Cookie相关
 	'cookie' => [
 		'prefix' => '',
@@ -59,6 +25,78 @@ return [
 		'path' => '@app/',
 		'domain' => $_SERVER['HTTP_HOST']
 	],
+
+	//是否默认开启CSRF验证
+	'csrf' => FALSE,
+
+	//App根目录，相对于framework目录
+	'dir' => '../application/',
+
+	//调试模式
+	'debug' => TRUE,
+
+	/*
+	 * ============================================================================================
+	 * BaseSY.php router()
+	 */
+
+	//默认的Router
+	'defaultRouter' => 'document/hello',
+
+	//虚拟路由表
+	'alias' => [
+		'doc' => 'document'
+	],
+
+	//Controller列表
+	'controller' => [
+		'document'
+	],
+
+	/*
+	 * ============================================================================================
+	 * BaseSY.php autoload()
+	 */
+
+	//会被Autoload加载的class列表
+	'class' => [
+		'demo\libs\option' => '@app/libs/option.php'
+	],
+
+	/*
+	 * ============================================================================================
+	 * BaseSY.php createUrl()
+	 */
+
+	//是否启用URL重写
+	'rewrite' => FALSE,
+
+	//自定义重写规则
+	'rewriteRule' => [
+		'article/view' => '@root/article/view/{{id}}.html',
+		'article/list' => '@root/article/list/{{id}}-{{page}}.html',
+		'user/view' => 'member/view-{{id}}.html'
+	],
+
+	//URL后缀，仅rewrite启用时有效
+	'rewriteExt' => 'html',
+
+
+	/*
+	 * ============================================================================================
+	 * 待定
+	 */
+	'appName' => 'Demo',
+
+	//默认语言
+	'language' => 'zh-CN',
+
+	//加密Key，被YSecurity::securityCode使用
+	'cookieKey' => 'test',
+
+	//加密Key，被YSecurity::password使用
+	'securityKey' => 'test',
+
 	//Redis支持
 	'redis' => [
 		'host' => '127.0.0.1',
@@ -66,6 +104,7 @@ return [
 		'password' => '',
 		'prefix' => 'pre_'
 	],
+
 	//MySQL支持
 	'mysql' => [
 		'host' => '127.0.0.1',
@@ -75,9 +114,11 @@ return [
 		'name' => 'test',
 		'prefix' => 'pre_'
 	],
+
 	//SQLite支持
 	'sqlite' => [
 		'version' => 'sqlite3',
 		'path' => '@app/data/db.sq3'
 	]
+
 ];
