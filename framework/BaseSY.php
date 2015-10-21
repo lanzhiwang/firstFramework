@@ -27,24 +27,61 @@ set_exception_handler(function ($e) {
 });
 
 class BaseSY {
-	//应用相关设置
-	public static $app;
-	public static $appDir;
-	public static $siteDir;
+	/*
+	 * D:/wamp/www/SYFramework/framework/
+	 */
 	public static $frameworkDir;
+
+	/*
+	 * D:/wamp/www/SYFramework/
+	 */
 	public static $rootDir;
+
+	/*
+	 * /SYFramework/
+	 */
+	public static $siteDir;
+
+	/*
+	 * D:/wamp/www/
+	 */
 	public static $webrootDir;
-	//会从data下的相应文件读取
+
+	/*
+	 * 所有的配置选项
+	 * $app = $config;
+	 */
+	public static $app;
+
+	/*
+	 * D:/wamp/www/SYFramework/application/
+	 */
+	public static $appDir;
+
+	/*
+	 * static::$mimeTypes = require(static::$frameworkDir . 'data/mimeTypes.php');
+	 */
 	public static $mimeTypes = NULL;
+
+	/*
+	 * static::$httpStatus = require(static::$frameworkDir . 'data/httpStatus.php');
+	 */
 	public static $httpStatus = NULL;
-	//路由参数名称
+
+	/*
+	 * 路由参数名称
+	 */
 	public static $routeParam = 'r';
-	//调试模式
+
+	/*
+	 * 调试模式
+	 */
 	public static $debug = TRUE;
+
 	/**
 	 * 初始化：创建Application
-	 * @access public
-	 * @param mixed $config设置
+	 * @param null $config
+	 * @throws SYException
 	 */
 	public static function createApplication($config = NULL) {
 		if ($config === NULL) {
@@ -294,10 +331,10 @@ class BaseSY {
 		$ext = strtolower($ext);
 		return isset(static::$mimeTypes[$ext]) ? (static::$mimeTypes[$ext]) : null;
 	}
+
 	/**
-	 * 获取模板路径
-	 * @access public
-	 * @param string $tpl 模板文件
+	 * @param $tpl
+	 * @return string
 	 */
 	// viewPath('document/hello')
 	public static function viewPath($tpl) {
