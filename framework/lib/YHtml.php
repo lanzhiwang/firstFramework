@@ -58,6 +58,7 @@ class YHtml {
 	 * @param string $url 地址
 	 * @return string
 	 */
+	// getWebPath('@root/public/style.css')
 	public static function getWebPath($url) {
 		$url = str_replace('@root/', Sy::$siteDir, $url);
 		// TODO: 增加@app支持
@@ -70,6 +71,7 @@ class YHtml {
 	 * @param string $url CSS地址
 	 * @return string
 	 */
+	// css('@root/public/style.css')
 	public static function css($url) {
 		if (strpos($url, '://') === FALSE) {
 			$url = static::getWebPath($url);

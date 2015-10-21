@@ -75,12 +75,16 @@ class BaseSY {
 
 		//程序相对网站根目录所在
 		/*
-		 * echo $_SERVER['PHP_SELF'];// http://localhost/SYFramework/index.php -> /SYFramework/index.php
+		 * echo $_SERVER['PHP_SELF'];
+		 * echo dirname($now);
+		 *
+		 * http://localhost/SYFramework/index.php -> /SYFramework/index.php -> /SYFramework
+		 *
+		 * http://localhost/SYFramework/index.php#start -> /SYFramework/index.php -> /SYFramework
+		 *
+		 * http://localhost/SYFramework/index.php?r=doc/start&title=HelloWorld -> /SYFramework/index.php -> /SYFramework
 		 */
 		$now = $_SERVER['PHP_SELF'];
-		/*
-		 * echo dirname($now);// /SYFramework
-		 */
 		$dir = str_replace('\\', '/', dirname($now));// /SYFramework
 		$dir !== '/' && $dir = rtrim($dir, '/') . '/';
 		static::$siteDir = $dir;// /SYFramework/
@@ -142,7 +146,10 @@ class BaseSY {
 	 * @access public
 	 */
 	public static function router() {
-		$r = trim($_GET[static::$routeParam]);
+		/*
+		 * http://localhost/SYFramework/index.php?r=doc/start&title=HelloWorld
+		 */
+		$r = trim($_GET[static::$routeParam]);// doc/start
 		if (empty($r)) {
 			$r = static::$app['defaultRouter'];// document/hello
 		}
@@ -310,6 +317,11 @@ class BaseSY {
 		}
 		if (is_array($_param)) {
 			unset($_param['_tpl'], $_param['_csrf_token']);
+			/*
+			 * extract — 从数组中将变量导入到当前的符号表
+			 *
+			 * $url = $url_to_css
+			 */
 			extract($_param);
 		}
 		include (static::viewPath($_tpl));

@@ -12,15 +12,40 @@
 use \sy\base\Controller;
 use \sy\lib\YHtml;
 class CDocument extends Controller {
+
 	public function __construct() {
+
 	}
+
 	/**
 	 * Hello页面
 	 */
 	public function actionHello() {
+		/*
+		 * $fileName = $appDir . 'models/' . $modelName . '.php';
+		 * require ($fileName);
+		 * $this->$loadAs = $m_file::_i();
+		 */
 		$this->load_model('test', 't');
+		/*
+		 * public function foo($str) {
+		 * 		return YHtml::encode(YHtml::css($str));
+		 * }
+		 *
+		 * css -> return '<link rel="stylesheet" href="' . $url . '"/>';
+		 * encode -> return htmlspecialchars($str, ENT_QUOTES, Sy::$app['charset'])
+		 */
 		$url_to_css = $this->t->foo('@root/public/style.css');
+
+		/*
+		 * 发送Content-type的header，也就是mimeType
+		 * header($header);
+		 */
 		Sy::setMimeType('html');
+
+		/*
+		 * include (static::viewPath($_tpl));
+		 */
 		Sy::view('document/hello', ['url' => $url_to_css]);
 	}
 	/**

@@ -23,8 +23,11 @@ use \sy\lib\YHtml;
 			<h3 class="panel-title"><a name="start"></a>开始</h3>
 		</div>
 		<div class="panel-body">
+            <!--http://localhost/SYFramework/index.php?r=doc/start&title=HelloWorld-->
 			<a href="<?=Sy::createUrl(['document/start', 'title' => 'HelloWorld'])?>">Hello World</a>
+			<!--http://localhost/SYFramework/index.php?r=doc/start&title=Base-->
 			<a href="<?=Sy::createUrl(['document/start', 'title' => 'Base'])?>">基本构架</a>
+			<!--http://localhost/SYFramework/index.php?r=doc/start&title=Router-->
 			<a href="<?=Sy::createUrl(['document/start', 'title' => 'Router'])?>">路由（Router）</a>
 		</div>
 	</div>
