@@ -23,13 +23,14 @@ class Controller {
 	 * @param string $modelName
 	 * @param string $loadAs
 	 */
+	//load_model('test', 't');
 	protected function load_model($modelName, $loadAs) {
 		//是否已经加载
 		if (in_array($modelName, $this->_m, TRUE)) {
 			return;
 		}
 		//load
-		$appDir = Sy::$appDir;
+		$appDir = Sy::$appDir;// D:/wamp/www/SYFramework/application/
 		$fileName = $appDir . 'models/' . $modelName . '.php';
 		if (!is_file($fileName)) {
 			throw new SYException('Model ' . $fileName . ' not exists', '10010');

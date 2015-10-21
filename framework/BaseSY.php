@@ -58,24 +58,51 @@ class BaseSY {
 		} elseif (!is_array($config)) {
 			throw new SYException('Config can not be recognised', '10003');
 		}
+
 		//框架所在的绝对路径
+		/*
+		 * echo __DIR__;// D:\wamp\www\SYFramework\framework
+		 * echo str_replace('\\', '/', __DIR__ );// D:/wamp/www/SYFramework/framework
+		 * echo rtrim(str_replace('\\', '/', __DIR__ ), '/');// D:/wamp/www/SYFramework/framework
+		 * echo rtrim(str_replace('\\', '/', __DIR__ ), '/') . '/'; //D:/wamp/www/SYFramework/framework/
+		*/
 		static::$frameworkDir =  rtrim(str_replace('\\', '/', __DIR__ ), '/') . '/';
+		/*
+		 * echo realpath(static::$frameworkDir . '../');// D:\wamp\www\SYFramework
+		 * echo str_replace('\\', '/', realpath(static::$frameworkDir . '../')) . '/';// D:/wamp/www/SYFramework/
+		 */
 		static::$rootDir = str_replace('\\', '/', realpath(static::$frameworkDir . '../')) . '/';
+
 		//程序相对网站根目录所在
+		/*
+		 * echo $_SERVER['PHP_SELF'];// http://localhost/SYFramework/index.php -> /SYFramework/index.php
+		 */
 		$now = $_SERVER['PHP_SELF'];
-		$dir = str_replace('\\', '/', dirname($now));
+		/*
+		 * echo dirname($now);// /SYFramework
+		 */
+		$dir = str_replace('\\', '/', dirname($now));// /SYFramework
 		$dir !== '/' && $dir = rtrim($dir, '/') . '/';
-		static::$siteDir = $dir;
+		static::$siteDir = $dir;// /SYFramework/
 		//网站根目录
-		static::$webrootDir = substr(static::$rootDir, 0, strlen(static::$rootDir) - strlen(static::$siteDir)) . '/';
+		static::$webrootDir = substr(static::$rootDir, 0, strlen(static::$rootDir) - strlen(static::$siteDir)) . '/';// D:/wamp/www/
+
 		//基本信息
+
+		//echo $config['cookie']['path'] . "\n";// @app/
 		$config['cookie']['path'] = str_replace('@app/', $dir, $config['cookie']['path']);
+		//echo $config['cookie']['path'];// /SYFramework/
 		static::$app = $config;
+
 		//应用的绝对路径
-		static::$appDir = str_replace('\\', '/', realpath(static::$frameworkDir . $config['dir'])) . '/';
+		static::$appDir = str_replace('\\', '/', realpath(static::$frameworkDir . $config['dir'])) . '/';// D:/wamp/www/SYFramework/application/
 		if (isset($config['debug'])) {
 			static::$debug = $config['debug'];
 		}
+
+		/*
+		 * mb_internal_encoding — 设置/获取内部字符编码
+		 */
 		mb_internal_encoding($config['charset']);
 		//是否启用CSRF验证
 		if ($config['csrf']) {
@@ -117,13 +144,15 @@ class BaseSY {
 	public static function router() {
 		$r = trim($_GET[static::$routeParam]);
 		if (empty($r)) {
-			$r = static::$app['defaultRouter'];
+			$r = static::$app['defaultRouter'];// document/hello
 		}
-		$r = explode('/', $r);
+		$r = explode('/', $r);// Array ( [0] => document [1] => hello )
 		if (count($r) !== 2) {
 			static::httpStatus('404', TRUE);
 		}
 		list($controllerName, $actionName) = $r;
+		//var_dump($controllerName, $actionName);// 'document' 'hello'
+
 		//Alias路由表
 		if (isset(static::$app['alias'][$controllerName])) {
 			$controllerName = static::$app['alias'][$controllerName];
@@ -134,6 +163,7 @@ class BaseSY {
 		}
 		$fileName = static::$appDir . 'controllers/' . $controllerName . '.php';
 		$className = 'C' . ucfirst($controllerName);
+		//echo $className;// CDocument
 		if (!is_file($fileName)) {
 			throw new SYException('Controller ' . $controllerName . ' not exists', '10004');
 		}
@@ -179,15 +209,16 @@ class BaseSY {
 	 * @param string $ext 自定义扩展名
 	 * @return string
 	 */
+	// createUrl(['document/start', 'title' => 'Router'])
 	public static function createUrl($param = '', $ext = NULL) {
 		$param = (array )$param;
-		$router = $param[0];
+		$router = $param[0];// document/start
 		$anchor = isset($param['#']) ? '#' . $param['#'] : '';
 		unset($param[static::$routeParam], $param['#']);
 		//基本URL
 		$url = ($_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 		if ($param[0] === '') {
-			return $url . static::$siteDir;
+			return $url . static::$siteDir;//http://localhost/SYFramework/
 		}
 		unset($param[0]);
 		//Alias路由表
@@ -208,8 +239,10 @@ class BaseSY {
 				unset($param[$k]);
 			}
 		} elseif (static::$app['rewrite']) {
+			// http://localhost/SYFramework/document/start.html
 			$url .= static::$siteDir . $controllerName . '/' . $actionName . '.' . ($ext === NULL ? static::$app['rewriteExt'] : $ext);
 		} else {
+			// http://localhost/SYFramework/index.php?r=document/start
 			$url .= static::$siteDir . 'index.php?r=' . $controllerName . '/' . $actionName;
 		}
 		if (count($param) > 0) {
@@ -218,6 +251,7 @@ class BaseSY {
 			} else {
 				$url .= '&';
 			}
+			// http://localhost/SYFramework/document/start.html?title=Router
 			$url .= http_build_query($param);
 		}
 		$url .= $anchor;
@@ -228,6 +262,7 @@ class BaseSY {
 	 * @access public
 	 * @param string $type 可为文件扩展名，或者Content-type的值
 	 */
+	// setMimeType('html')
 	public static function setMimeType($type) {
 		$mimeType = static::getMimeType($type);
 		if ($mimeType === NULL) {
@@ -257,6 +292,7 @@ class BaseSY {
 	 * @access public
 	 * @param string $tpl 模板文件
 	 */
+	// viewPath('document/hello')
 	public static function viewPath($tpl) {
 		return static::$appDir . 'views/' . $tpl . '.php';
 	}
@@ -266,6 +302,7 @@ class BaseSY {
 	 * @param string $_tpl 模板文件
 	 * @param array $_param 参数
 	 */
+	// view('document/hello', ['url' => $url_to_css]);
 	public static function view($_tpl, $_param = NULL) {
 		//是否启用CSRF验证
 		if (static::$app['csrf']) {

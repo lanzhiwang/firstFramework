@@ -18,4 +18,7 @@ require (__DIR__ . '/BaseSY.php');
 class Sy extends \sy\BaseSY {
 }
 
+/*
+ * spl_autoload_register — 注册给定的函数作为 __autoload 的实现
+ */
 spl_autoload_register(['Sy', 'autoload'], TRUE, TRUE);
