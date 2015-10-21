@@ -5,6 +5,8 @@ https://git.oschina.net/sy/SYFramework.git
 
 此项目基于[Apache License 2.0](http://opensource.org/licenses/Apache-2.0)开源
 
+http://localhost/SYFramework/index.php
+
 index.php
   |
 config.php
