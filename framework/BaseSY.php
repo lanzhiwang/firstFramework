@@ -310,6 +310,7 @@ class BaseSY {
 	 * @param array $_param 参数
 	 */
 	// view('document/hello', ['url' => $url_to_css]);
+	// view('document/start/' . $_GET['title'])
 	public static function view($_tpl, $_param = NULL) {
 		//是否启用CSRF验证
 		if (static::$app['csrf']) {
